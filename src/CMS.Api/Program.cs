@@ -20,7 +20,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
-
+//add cors
+var TeduCorsPolicy = "TeduCorsPolicy";
+builder.Services.AddCors(o => o.AddPolicy(TeduCorsPolicy, builder =>
+{
+    builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins(configuration["AllowedOrigins"]?.Split(";"))
+        .AllowCredentials();
+}));
 
 
 
@@ -117,6 +125,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(TeduCorsPolicy);
 
 app.UseAuthorization();
 
