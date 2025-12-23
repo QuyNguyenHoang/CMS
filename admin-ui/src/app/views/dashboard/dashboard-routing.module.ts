@@ -2,15 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
+import { AuthGuard } from '../../shared/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
-    data: {
-      title: 'dashboard'
+     data: {
+      title: 'Trang chủ',
+      requiredPolicy: 'Permissions.Dashboard.View',
+      canActivate: [AuthGuard],
     }
   }
+  
 ];
 
 @NgModule({

@@ -6,10 +6,13 @@ using CMS.Infrastructure;
 using CMS.Infrastructure.Repositorires;
 using CMS.Infrastructure.SeedWork;
 using CMS.Infrastructure.SeedWorks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 using TeduBlog.Api.Filters;
 using TeduBlog.Core.ConfigOptions;
 
@@ -110,6 +113,25 @@ builder.Services.AddSwaggerGen(c =>
     c.ParameterFilter<SwaggerNullableParameterFilter>();
 });
 
+//authen
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromSeconds(0),
+        ValidIssuer = configuration["JwtTokenSettings:Issuer"],
+        ValidAudience = configuration["JwtTokenSettings:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtTokenSettings:Key"]))
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -127,6 +149,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(TeduCorsPolicy);
+app.UseAuthentication();
 
 app.UseAuthorization();
 

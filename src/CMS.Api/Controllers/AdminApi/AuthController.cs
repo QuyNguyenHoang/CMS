@@ -55,7 +55,7 @@ namespace CMS.Api.Controllers.AdminApi
             }
             //Authorization
             var roles = await _userManager.GetRolesAsync(user);
-            var permissions = new List<string>();
+            var permissions = await this.GetPermissionByUserIdAsync(user.Id.ToString());
             var claims = new[]
             {
                new Claim(JwtRegisteredClaimNames.Email, user.Email),
@@ -83,7 +83,7 @@ namespace CMS.Api.Controllers.AdminApi
         {
             var user = await _userManager.FindByIdAsync(userId);
             var roles = await _userManager.GetRolesAsync(user);
-            var permissions = await this.GetPermissionByUserIdAsync(user.Id.ToString());
+            var permissions = new List<string>();
             var allPermissions = new List<RoleClaimsDto>();
             if (roles.Contains(Roles.Admin))
             {

@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { Page500Component } from './page500/page500.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { Page403Component} from './page403/page403.component'
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
+    pathMatch: 'full',
   },
   {
     path: '500',
@@ -24,10 +26,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'register',
-    component: RegisterComponent,
+    path: '403',
+    component: Page403Component,
     data: {
-      title: 'Register Page'
+      title: 'Page 403'
     }
   }
 ];
