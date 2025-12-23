@@ -93,8 +93,8 @@ namespace CMS.Api.Controllers.AdminApi
         {
             var query = _roleManager.Roles;
             if (!string.IsNullOrEmpty(keyword))
-                query = query.Where(x => x.Name!.Contains(keyword)
-                                         || x.DisplayName.Contains(keyword));
+                query = query.Where(x => x.Name.Contains(keyword)
+                                         || (x.DisplayName != null && x.DisplayName.Contains(keyword)));
 
             var totalRow = query.Count();
             query = query.Skip((pageIndex - 1) * pageSize)

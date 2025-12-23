@@ -1,4 +1,5 @@
 using CMS.Api;
+using CMS.Api.Authorization;
 using CMS.Api.Services;
 using CMS.Core.Domain.Identity;
 using CMS.Core.Models.Content;
@@ -7,6 +8,7 @@ using CMS.Infrastructure.Repositorires;
 using CMS.Infrastructure.SeedWork;
 using CMS.Infrastructure.SeedWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -91,7 +93,9 @@ builder.Services.AddAutoMapper(typeof(PostInListDto));
 builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
-builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
 
 
 
