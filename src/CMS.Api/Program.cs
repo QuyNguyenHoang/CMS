@@ -1,6 +1,7 @@
 using CMS.Api;
 using CMS.Api.Authorization;
 using CMS.Api.Services;
+using CMS.Core.ConfigOptions;
 using CMS.Core.Domain.Identity;
 using CMS.Core.Models.Content;
 using CMS.Infrastructure;
@@ -91,6 +92,7 @@ builder.Services.AddAutoMapper(typeof(PostInListDto));
 
 //Authen and author
 builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
+builder.Services.Configure<MediaSettings>(configuration.GetSection("MediaSettings"));
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { AdminApiUserApiClient, UserDto } from 'src/app/api/admin-api.service.generated';
+import { AdminApiUserApiClient, UserDto } from './../../../../../src/app/api/admin-api.service.generated';
 
 @Component({
   templateUrl: 'change-email.component.html',
@@ -12,12 +12,12 @@ export class ChangeEmailComponent implements OnInit, OnDestroy {
 
   // Default
   public blockedPanelDetail: boolean = false;
-  public form: FormGroup;
-  public title: string;
+  public form!: FormGroup;
+  public title: string ="";
   public btnDisabled = false;
-  public saveBtnName: string;
-  public closeBtnName: string;
-  public email: string;
+  public saveBtnName: string ="";
+  public closeBtnName: string= "";
+  public email: string ="";
   formSavedEventEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -58,7 +58,7 @@ export class ChangeEmailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: (response: UserDto) => {
-          this.email = response.email;
+          this.email = response.email ?? "";
           this.buildForm();
           this.toggleBlockUI(false);
         },
